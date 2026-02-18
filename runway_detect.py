@@ -2,10 +2,8 @@ import cv2
 import numpy as np
 from collections import deque
 
-# -----------------------------
-# PARAMETERS
-# -----------------------------
-VIDEO_SOURCE = "./runway.mp4"
+
+VIDEO_SOURCE = "ENTER_YOUR_VIDEO_PATH"
 SMOOTHING_WINDOW = 15
 OFFSET_THRESHOLD = 25
 ANGLE_THRESHOLD = 3
@@ -62,9 +60,7 @@ def average_line(lines):
     return int(np.mean(x_vals)), np.mean(slopes)
 
 
-# -----------------------------
-# MAIN
-# -----------------------------
+
 cap = cv2.VideoCapture(VIDEO_SOURCE)
 
 while True:
@@ -98,9 +94,7 @@ while True:
 
         if left_x and right_x:
 
-            # -----------------------------
-            # DRAW THIN RUNWAY BOUNDARIES
-            # -----------------------------
+           
             height = frame.shape[0]
 
             cv2.line(frame,
@@ -125,9 +119,7 @@ while True:
 
             deviation = smoothed_center - frame_center
 
-            # -----------------------------
-            # DECISION LOGIC
-            # -----------------------------
+           
             if abs(deviation) < OFFSET_THRESHOLD and abs(smoothed_angle) < ANGLE_THRESHOLD:
                 status = "ALIGNED"
                 color = (0, 255, 0)
@@ -141,7 +133,6 @@ while True:
                 status = "MISALIGNED"
                 color = (0, 0, 255)
 
-            # Draw thin center lines
             cv2.line(frame,
                      (smoothed_center, 0),
                      (smoothed_center, height),
@@ -152,7 +143,6 @@ while True:
                      (frame_center, height),
                      (0, 0, 255), 1)
 
-            # Display info
             cv2.putText(frame,
                         f"Deviation: {int(deviation)} px",
                         (20, 40),
